@@ -23,11 +23,21 @@ A production-ready, highly scalable URL shortener (Bit.ly clone) deployed to AWS
 
 ```text
 .
-├── main.tf                 # Infrastructure as Code (Terraform)
-├── lambda_src/             # Directory for Lambda code and dependencies
-│   ├── lambda_function.py  # Core Python logic
-│   └── ...                 # Installed pip packages (e.g., redis)
-└── README.md               # Project documentation
+├── main.tf                    # Terraform configuration (IaC)
+├── terraform.tfstate*         # local state / backups (ignored in VCS)
+├── lambda_src/                # Lambda code and vendored dependencies
+│   ├── lambda_function.py     # Lambda handler and core application logic
+│   ├── requirements.txt       # (optional) pinned deps for packaging
+│   └── redis/                 # vendored `redis` Python package used by Lambda
+│       ├── __init__.py
+│       ├── client.py
+│       ├── connection.py
+│       ├── commands/          # command modules (core, bf, json, search, ...)
+│       ├── asyncio/           # async helpers and clients
+│       └── _parsers/          # response/encoding parsers (hiredis, resp2/3, ...)
+└── README.md                  # Project documentation
+
+(* local state files produced by Terraform)
 
 ```
 
